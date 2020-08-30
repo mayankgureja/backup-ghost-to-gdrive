@@ -19,13 +19,13 @@ for inst in $instances; do
     echo "* Backing up $inst *\n"
 
     # Create temporary backup
-    gzip $BACKUP_DIR/$inst
+    tar -zcf $BACKUP_DIR/$inst.tar.gz -C /var/www/$inst content
 
     # Use rclone to upload files to the remote backup server
     rclone copy $BACKUP_DIR/ $RCLONE_REMOTE:$BACKUP_DIR
 
     # Delete file
-    rm $BACKUP_DIR/$inst.gz
+    rm $BACKUP_DIR/$inst.tar.gz
 
     echo "* Finished backing up $inst *\n"
 done
